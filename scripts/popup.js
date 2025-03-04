@@ -60,7 +60,17 @@ class TodoApp {
     // 加载待办事项
     async loadTodos() {
         const dateStr = this.formatDate(this.currentDate);
-        const todos = await this.storage.getTodos(dateStr);
+        let todos = await this.storage.getTodos(dateStr);
+        
+        // 如果是今天的日期，检查并继承前一天的未完成待办事项
+        const today = new Date();
+        if (this.isSameDate(this.currentDate, today) && todos.length === 0) {
+            const inheritedTodos = await this.storage.inheritTodosFromPreviousDay(dateStr);
+            if (inheritedTodos.length > 0) {
+                todos = [...todos, ...inheritedTodos];
+            }
+        }
+        
         this.renderTodos(todos);
     }
 

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "极简待办",
-  "version": "1.0",
+  "version": "1.1",
   "description": "一个简洁的待办事项Chrome扩展",
   "icons": {
     "16": "images/icon16.png",

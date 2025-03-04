@@ -64,4 +64,38 @@ export class TodoStorage {
         }
         return null;
     }
+
+    // 继承前一天未完成的待办事项
+    async inheritTodosFromPreviousDay(currentDate) {
+        // 计算前一天的日期
+        const previousDate = new Date(currentDate);
+        previousDate.setDate(previousDate.getDate() - 1);
+        const previousDateStr = previousDate.toISOString().split('T')[0];
+
+        // 获取前一天的待办事项
+        const previousTodos = await this.getTodos(previousDateStr);
+        
+        // 筛选出未完成的待办事项
+        const uncompletedTodos = previousTodos.filter(todo => !todo.completed);
+        
+        // 如果有未完成的待办事项，则添加到当前日期
+        if (uncompletedTodos.length > 0) {
+            const currentTodos = await this.getTodos(currentDate);
+            
+            // 为每个未完成的待办事项创建新的条目
+            const newTodos = uncompletedTodos.map(todo => ({
+                id: this.generateId(),
+                content: todo.content,
+                completed: false,
+                createdAt: Date.now(),
+                inheritedFrom: previousDateStr
+            }));
+            
+            // 将新的待办事项添加到当前日期的列表中
+            await this.saveTodos(currentDate, [...currentTodos, ...newTodos]);
+            return newTodos;
+        }
+        
+        return [];
+    }
 }
