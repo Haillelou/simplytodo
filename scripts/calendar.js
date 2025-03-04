@@ -6,6 +6,7 @@ export class Calendar {
         this.currentDate = new Date();
         this.selectedDate = new Date();
         this.isVisible = false;
+        this.render();
     }
 
     // 获取月份的天数
@@ -82,12 +83,14 @@ export class Calendar {
     // 添加事件监听
     attachEventListeners() {
         // 上一月/下一月按钮
-        this.container.querySelector('.prev').addEventListener('click', () => {
+        this.container.querySelector('.prev').addEventListener('click', (e) => {
+            e.stopPropagation(); // 阻止事件冒泡
             this.currentDate.setMonth(this.currentDate.getMonth() - 1);
             this.render();
         });
 
-        this.container.querySelector('.next').addEventListener('click', () => {
+        this.container.querySelector('.next').addEventListener('click', (e) => {
+            e.stopPropagation(); // 阻止事件冒泡
             this.currentDate.setMonth(this.currentDate.getMonth() + 1);
             this.render();
         });

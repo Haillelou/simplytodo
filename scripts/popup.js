@@ -92,10 +92,18 @@ class TodoApp {
 
             const checkbox = todoItem.querySelector('.todo-checkbox');
             const content = todoItem.querySelector('.todo-content');
-            const deleteButton = todoItem.querySelector('.todo-delete');
+            content.contentEditable = false;
 
-            // 切换完成状态
-            checkbox.addEventListener('change', () => this.toggleTodo(todo.id));
+            // 添加复选框点击事件监听器
+            checkbox.addEventListener('click', () => {
+                this.toggleTodo(todo.id);
+            });
+
+            // 点击内容时进入编辑模式
+            content.addEventListener('click', () => {
+                content.contentEditable = true;
+                content.focus();
+            });
 
             // 编辑内容
             let originalContent = todo.content;
@@ -104,6 +112,7 @@ class TodoApp {
             });
 
             content.addEventListener('blur', () => {
+                content.contentEditable = false;
                 const newContent = content.textContent.trim();
                 if (newContent && newContent !== originalContent) {
                     this.updateTodo(todo.id, newContent);
@@ -120,6 +129,7 @@ class TodoApp {
             });
 
             // 删除待办
+            const deleteButton = todoItem.querySelector('.todo-delete');
             deleteButton.addEventListener('click', () => this.deleteTodo(todo.id));
 
             this.todoList.appendChild(todoItem);
@@ -136,6 +146,7 @@ class TodoApp {
         const newTodoItem = this.todoList.firstChild;
         if (newTodoItem) {
             const content = newTodoItem.querySelector('.todo-content');
+            content.contentEditable = true;
             content.focus();
             // 选中全部文本
             const range = document.createRange();
