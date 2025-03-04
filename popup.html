@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简待办</title>
+    <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="date-title" id="dateTitle"></h1>
+            <button class="calendar-button" id="calendarButton" aria-label="选择日期">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2H13C13.5523 2 14 2.44772 14 3V13C14 13.5523 13.5523 14 13 14H3C2.44772 14 2 13.5523 2 13V3C2 2.44772 2.44772 2 3 2H4V1H5V2H11V1H12V2ZM13 13V5H3V13H13ZM5 7H4V6H5V7ZM8 7H7V6H8V7ZM11 7H10V6H11V7ZM5 10H4V9H5V10ZM8 10H7V9H8V10ZM11 10H10V9H11V10Z" fill="currentColor"/>
+                </svg>
+            </button>
+        </header>
+        <div class="calendar-container" id="calendar" style="display: none;">
+            <!-- 日历组件将通过JavaScript动态生成 -->
+        </div>
+        <main class="todo-container">
+            <div class="todo-list" id="todoList">
+                <!-- 待办事项列表将通过JavaScript动态生成 -->
+            </div>
+            <div class="empty-state" id="emptyState">
+                <p>点击下方"添加待办"开始规划今天的任务吧！</p>
+            </div>
+        </main>
+        <footer class="footer">
+            <button class="add-todo-button" id="addTodoButton">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                添加待办
+            </button>
+        </footer>
+    </div>
+    <script src="scripts/popup.js" type="module"></script>
+</body>
+</html>
