@@ -2,6 +2,7 @@
 export class TodoStorage {
     constructor() {
         this.storageKey = 'todo_items';
+        this.inheritedKey = 'todos_inherited';
     }
 
     // 生成唯一ID
@@ -67,6 +68,13 @@ export class TodoStorage {
 
     // 继承前一天未完成的待办事项
     async inheritTodosFromPreviousDay(currentDate) {
+        // 检查今天是否已经继承过待办事项
+        const inheritedKey = `${this.inheritedKey}_${currentDate}`;
+        const inheritedStatus = await chrome.storage.local.get(inheritedKey);
+        if (inheritedStatus[inheritedKey]) {
+            return [];
+        }
+
         // 计算前一天的日期
         const previousDate = new Date(currentDate);
         previousDate.setDate(previousDate.getDate() - 1);
@@ -87,15 +95,19 @@ export class TodoStorage {
                 id: this.generateId(),
                 content: todo.content,
                 completed: false,
-                createdAt: Date.now(),
-                inheritedFrom: previousDateStr
+                createdAt: Date.now()
             }));
             
             // 将新的待办事项添加到当前日期的列表中
             await this.saveTodos(currentDate, [...currentTodos, ...newTodos]);
+
+            // 标记今天已经继承过待办事项
+            await chrome.storage.local.set({ [inheritedKey]: true });
             return newTodos;
         }
         
+        // 即使没有待办事项要继承，也标记今天已经继承过
+        await chrome.storage.local.set({ [inheritedKey]: true });
         return [];
     }
 }
